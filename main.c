@@ -4,26 +4,21 @@
 
 static const float VELOCITY = 0.5;
 
-void HandleMovement(Camera3D* camera)
-{
-    if (IsKeyDown(KEY_W)) {
-        MoveCameraTowards(camera, camera->target);
-    }
-    if (IsKeyDown(KEY_S)) {
-        MoveCameraTowards(camera, Vector3Invert(camera->target));
-    }
-    if (IsKeyDown(KEY_A)) {
-        MoveCameraTowards(camera, Vector3Invert(camera->target));
-    }
-    if (IsKeyDown(KEY_D)) {
-        camera->position.y -= VELOCITY;
-    }
-}
-
-void MoveCameraTowards(Camera3D* camera, Vector3 towards)
-{
-    camera->position = Vector3MoveTowards(camera->position, towards, VELOCITY);
-}
+// void HandleMovement(Camera3D* camera)
+// {
+//     if (IsKeyDown(KEY_W)) {
+//         MoveCameraTowards(camera, camera->target);
+//     }
+//     if (IsKeyDown(KEY_S)) {
+//         MoveCameraTowards(camera, Vector3Invert(camera->target));
+//     }
+//     if (IsKeyDown(KEY_A)) {
+//         MoveCameraTowards(camera, Vector3Invert(camera->target));
+//     }
+//     if (IsKeyDown(KEY_D)) {
+//         camera->position.y -= VELOCITY;
+//     }
+// }
 
 int main()
 {

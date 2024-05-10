@@ -1,19 +1,50 @@
-CC=gcc
-# CC=x86_64-w64-mingw32-gcc
-CLIBS=-lraylib -lGL -lm -lpthread -ldl -lrt -lX11
-CFLAGS=-o
+# Compiler for Linux
+CC_LINUX := gcc
 
-all: .game
+# Compiler for Windows
+CC_WINDOWS := x86_64-w64-mingw32-gcc
 
-.game: .build game.c
-	$(CC) $(CFLAGS) build/game game.c $(CLIBS)
+# Compiler flags
+CFLAGS := -Wall -Wextra -std=c99 -I./raylib/include
 
-.build:
-	make clean
-	- mkdir build
+# Linker flags
+LDFLAGS := -L./raylib/lib
 
-run: all
-	build/game
+# Libraries to link against
+LDLIBS := -Wl,-Bstatic -lraylib -Wl,-Bdynamic -lm -lpthread -ldl -lrt
+
+# Source files
+SRCS := main.c
+
+# Object files
+OBJS := $(SRCS:.c=.o)
+
+# Executable name for Linux
+TARGET_LINUX := game
+
+# Executable name for Windows
+TARGET_WINDOWS := game.exe
+
+# Default target platform
+PLATFORM ?= linux
+
+.PHONY: all clean
+
+ifeq ($(PLATFORM),linux)
+    CC := $(CC_LINUX)
+    TARGET := $(TARGET_LINUX)
+else
+    CC := $(CC_WINDOWS)
+    TARGET := $(TARGET_WINDOWS)
+endif
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -fr build
+	rm -f $(OBJS) $(TARGET)
